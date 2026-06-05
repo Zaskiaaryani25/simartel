@@ -1,9 +1,14 @@
 <IfModule mod_rewrite.c>
     <IfModule mod_negotiation.c>
-        Options -MultiViews -Indexes
+        # Hapus -Indexes jika server memblokir symlink/akses gambar langsung (Error 403)
+        Options -MultiViews
     </IfModule>
 
     RewriteEngine On
+
+    # 1. Alihkan semua request ke folder public secara transparan
+    RewriteCond %{REQUEST_URI} !^/public/
+    RewriteRule ^(.*)$ public/$1 [L]
 
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
